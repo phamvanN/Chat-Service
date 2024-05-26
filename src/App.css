@@ -1,38 +1,77 @@
 .App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+.chat-container {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+h1 {
   text-align: center;
+  background: #4CAF50;
+  color: white;
+  margin: 0;
+  padding: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.chat-window {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  height: 400px;
+}
+
+.messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+  word-break: break-word; /* Bricht lange Wörter an beliebiger Stelle um */
+  hyphens: auto; /* Automatische Bindestriche bei langen Wörtern */
+}
+
+.message {
+  background: #e0e0e0;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.message-form {
+  display: flex;
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+  resize: none; /* Verhindert die manuelle Größenänderung durch den Benutzer */
+  overflow: hidden; /* Verhindert das Scrollen innerhalb des Textarea */
+  word-break: break-word; /* Bricht lange Wörter an beliebiger Stelle um */
+  hyphens: auto; /* Automatische Bindestriche bei langen Wörtern */
+}
+
+.send-button {
+  padding: 10px 20px;
+  border: none;
+  background: #4CAF50;
   color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.send-button:hover {
+  background: #45a049;
 }

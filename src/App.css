@@ -1,77 +1,94 @@
 .App {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
 }
 
 .chat-container {
-  width: 100%;
   max-width: 600px;
-  background: white;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  background: #fff;
 }
 
-h1 {
-  text-align: center;
-  background: #4CAF50;
-  color: white;
-  margin: 0;
-  padding: 10px;
-}
-
-.chat-window {
+.chat-header {
   display: flex;
-  flex-direction: column;
-  height: 400px;
+  justify-content: space-between;
+  align-items: center;
+  background: #4CAF50;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
 }
 
-.messages {
-  flex: 1;
+.chat-header h1 {
+  margin: 0;
+  color: #fff;
+}
+
+.room-container {
+  display: flex;
+}
+
+.room-container input {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.room-container button {
+  padding: 5px 10px;
+}
+
+.chat-main {
+  height: 300px;
+  overflow-y: scroll;
   padding: 10px;
-  overflow-y: auto;
-  border-bottom: 1px solid #ddd;
-  word-break: break-word; /* Bricht lange Wörter an beliebiger Stelle um */
-  hyphens: auto; /* Automatische Bindestriche bei langen Wörtern */
+  background: #f1f1f1;
+}
+
+.chat-messages {
+  list-style: none;
+  padding: 0;
 }
 
 .message {
-  background: #e0e0e0;
-  margin: 5px 0;
   padding: 10px;
+  margin-bottom: 5px;
+  background: #d4edda;
   border-radius: 5px;
 }
 
-.message-form {
+.chat-form-container {
   display: flex;
-  padding: 10px;
-  background: #f9f9f9;
+  margin-top: 10px;
 }
 
-.message-input {
+.chat-form-container input {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-right: 10px;
-  resize: none; /* Verhindert die manuelle Größenänderung durch den Benutzer */
-  overflow: hidden; /* Verhindert das Scrollen innerhalb des Textarea */
-  word-break: break-word; /* Bricht lange Wörter an beliebiger Stelle um */
-  hyphens: auto; /* Automatische Bindestriche bei langen Wörtern */
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
 }
 
-.send-button {
-  padding: 10px 20px;
-  border: none;
-  background: #4CAF50;
+.chat-form-container textarea {
+  width: calc(100% - 80px); /* Adjust the width considering the send button */
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  resize: none; /* Prevent resizing */
+  box-sizing: border-box;
+}
+
+.chat-form-container button {
+  width: 60px;
+  height: 60px;
+  background-color: #4CAF50;
   color: white;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.send-button:hover {
-  background: #45a049;
+.chat-messages .message span {
+  white-space: pre-wrap; /* Ensure that whitespace is preserved */
 }

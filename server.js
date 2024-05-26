@@ -2,62 +2,62 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const mongoose = require('mongoose');
-const CryptoJS = require('crypto-js');
-require('dotenv').config();
+const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"]
-  }
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
 });
 
-const messageSchema = new mongoose.Schema({
-  room: String,
-  message: String,
-  timestamp: { type: Date, default: Date.now }
+const MessageSchema = new mongoose.Schema({
+    room: String,
+    message: String,
+    timestamp: { type: Date, default: Date.now }
 });
-const Message = mongoose.model('Message', messageSchema);
 
-mongoose.connect(process.env.DB_URI, { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000 // 30 Sekunden Timeout
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+const Message = mongoose.model('Message', MessageSchema);
+
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('MongoDB connected');
+}).catch(err => {
+    console.error('MongoDB connection error:', err);
+});
+
+app.use(cors());
+
+app.get('/', (req, res) => {
+    res.send('Server is running');
+});
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+    console.log('a user connected');
 
-  socket.on('join room', (room) => {
-    socket.join(room);
-    console.log(`User joined room: ${room}`);
-
-    Message.find({ room }).then(messages => {
-      socket.emit('previous messages', messages);
+    socket.on('join', (room) => {
+        socket.join(room);
+        console.log(`User joined room: ${room}`);
+        io.to(room).emit('message', `User joined room ${room}`);
     });
-  });
 
-  socket.on('chat message', ({ room, message }) => {
-    const encryptedMessage = CryptoJS.AES.encrypt(message, process.env.SECRET_KEY).toString();
-    const msg = new Message({ room, message: encryptedMessage });
-
-    msg.save().then(() => {
-      io.to(room).emit('chat message', {
-        room,
-        message: CryptoJS.AES.decrypt(encryptedMessage, process.env.SECRET_KEY).toString(CryptoJS.enc.Utf8)
-      });
+    socket.on('message', async ({ room, message }) => {
+        const newMessage = new Message({ room, message });
+        await newMessage.save();
+        io.to(room).emit('message', message);
     });
-  });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
 });
 
-server.listen(4000, () => {
-  console.log('listening on *:4000');
+server.listen(5000, () => {
+    console.log('listening on *:5000');
 });
